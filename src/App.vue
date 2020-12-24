@@ -32,7 +32,7 @@
         <button 
           class="bg-red-400 text-white rounded-r px-4 py-3"
           @click="deleteTodo(todo.id)"
-        ><i class="fas fa-trash"></i></button>
+        ><font-awesome-icon icon="trash" /></button>
       </li>
     </ul>
 
@@ -54,7 +54,7 @@
         <button 
           class="bg-red-400 text-white rounded-r px-4 py-3"
           @click="deleteTodo(todo.id)"
-        ><i class="fas fa-trash"></i></button>
+        ><font-awesome-icon icon="trash" /></button>
       </li>
     </ul>
     <div 
@@ -69,17 +69,17 @@
       <button 
         class="bg-red-400 text-white py-2 px-3" 
         @click="adding = false"
-      ><i class="fas fa-times"></i></button>
+      ><font-awesome-icon icon="times" /></button>
       <button 
         class="bg-green-400 text-white py-2 px-3 rounded-r"
         @click="addTodo()"
-      ><i class="fas fa-plus"></i></button>
+      ><font-awesome-icon icon="plus" /></button>
     </div>
     <button 
       class="bg-green-400 text-white py-2 px-3 w-full rounded mt-2 flex justify-center items-center"
       v-else
       @click="adding = true"
-    ><i class="fas fa-plus"></i></button>
+    ><font-awesome-icon icon="plus" /></button>
   </div>
 </template>
 
