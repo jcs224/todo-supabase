@@ -84,6 +84,7 @@
 </template>
 
 <script>
+import { createClient } from '@supabase/supabase-js'
 
 export default {
   name: 'App',
@@ -92,23 +93,8 @@ export default {
       adding: false,
       newTodoText: '',
       page: 'uncompleted',
-      todos: [
-        {
-          id: this.randomString(),
-          text: 'Learn Vue',
-          completed: true,
-        },
-        {
-          id: this.randomString(),
-          text: 'Learn supabase',
-          completed: false,
-        },
-        {
-          id: this.randomString(),
-          text: 'Profit 🤑🤑🤑',
-          completed: false
-        }
-      ]
+      supabaseClient: null,
+      todos: []
     }
   },
 
@@ -123,38 +109,60 @@ export default {
   },
 
   methods: {
-    addTodo() {
-      this.todos.push({
-        id: this.randomString(),
-        text: this.newTodoText,
-        completed: false
-      })
+    async addTodo() {
+      await this.supabaseClient.from('todos').insert([
+        {
+          text: this.newTodoText
+        }
+      ])
+
       this.newTodoText = ''
       this.adding = false
     },
 
-    deleteTodo(id) {
-      let index = this.todos.map(todo => todo.id).indexOf(id)
-      this.todos.splice(index, 1)
+    async deleteTodo(id) {
+      await this.supabaseClient.from('todos').delete().eq('id', id)
     },
 
     switchPage(page) {
       this.page = page
     },
 
-    completeTodo(id) {
-      let index = this.todos.map(todo => todo.id).indexOf(id)
-      this.todos[index].completed = true
+    async completeTodo(id) {
+      await this.supabaseClient.from('todos').update({'completed': true}).eq('id', id)
     },
 
-    uncompleteTodo(id) {
-      let index = this.todos.map(todo => todo.id).indexOf(id)
-      this.todos[index].completed = false
+    async uncompleteTodo(id) {
+      await this.supabaseClient.from('todos').update({'completed': false}).eq('id', id)
     },
+  },
 
-    randomString() {
-      return Math.random().toString(36).substring(2);
-    }
+  created() {
+    var self = this
+    this.supabaseClient = createClient(
+      import.meta.env.VITE_SUPABASE_URL, 
+      import.meta.env.VITE_SUPABASE_KEY
+    )
+
+    this.supabaseClient.from('todos').select('*').then((result) => {
+      self.todos = result.data
+    })
+
+    this.supabaseClient.from('todos').on('*', payload => {
+      switch (payload.eventType) {
+        case 'INSERT':
+          this.todos.push(payload.new)
+          break
+        case 'UPDATE':
+          let updateIndex = this.todos.map(todo => todo.id).indexOf(payload.new.id)
+          this.todos[updateIndex] = payload.new
+          break
+        case 'DELETE':
+          let deleteIndex = this.todos.map(todo => todo.id).indexOf(payload.old.id)
+          this.todos.splice(deleteIndex, 1)
+          break
+      }
+    }).subscribe()
   }
 }
 </script>
