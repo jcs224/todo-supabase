@@ -30,7 +30,7 @@
           </span>
         </div>
         <button 
-          class="bg-red-400 text-white rounded-r px-2 py-3"
+          class="bg-red-400 text-white rounded-r px-4 py-3"
           @click="deleteTodo(todo.id)"
         ><i class="fas fa-trash"></i></button>
       </li>
@@ -52,9 +52,9 @@
           </span>
         </div>
         <button 
-          class="bg-red-400 text-white rounded-r px-2 py-3"
+          class="bg-red-400 text-white rounded-r px-4 py-3"
           @click="deleteTodo(todo.id)"
-        >delete</button>
+        ><i class="fas fa-trash"></i></button>
       </li>
     </ul>
     <div 
