@@ -32,7 +32,7 @@
         <button 
           class="bg-red-400 text-white rounded-r px-2 py-3"
           @click="deleteTodo(todo.id)"
-        >delete</button>
+        ><i class="fas fa-trash"></i></button>
       </li>
     </ul>
 
@@ -69,17 +69,17 @@
       <button 
         class="bg-red-400 text-white py-2 px-3" 
         @click="adding = false"
-      >Cancel</button>
+      ><i class="fas fa-times"></i></button>
       <button 
         class="bg-green-400 text-white py-2 px-3 rounded-r"
         @click="addTodo()"
-      >Add</button>
+      ><i class="fas fa-plus"></i></button>
     </div>
     <button 
-      class="bg-green-400 text-white py-2 px-3 w-full rounded mt-2"
+      class="bg-green-400 text-white py-2 px-3 w-full rounded mt-2 flex justify-center items-center"
       v-else
       @click="adding = true"
-    >Add</button>
+    ><i class="fas fa-plus"></i></button>
   </div>
 </template>
 
